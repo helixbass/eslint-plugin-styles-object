@@ -1,10 +1,11 @@
-{flow, map: fmap} = require 'lodash/fp'
+{flow, map: fmap, fromPairs: ffromPairs} = require 'lodash/fp'
 
-ruleNames = ['no-unused-styles']
+ruleNames = ['no-unused-styles', 'no-undef-styles']
 
 rules = do flow(
   -> ruleNames
-  fmap (rule) -> require "./rules/#{rule}"
+  fmap (ruleName) -> [ruleName, require "./rules/#{ruleName}"]
+  ffromPairs
 )
 
 module.exports = {rules}

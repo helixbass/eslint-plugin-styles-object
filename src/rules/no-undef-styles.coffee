@@ -3,7 +3,7 @@
 module.exports =
   meta:
     docs:
-      description: 'Enforce that all styles are used'
+      description: 'Enforce that no undefined styles are referenced'
       category: 'Possible Errors'
       recommended: yes
     schema: []
@@ -14,14 +14,14 @@ module.exports =
 
     VariableDeclarator: (node) ->
       return unless isStylesDeclaration node
-      styleKeys = (key for {key, computed} in node.init.properties when key.type is 'Identifier' and not computed)
+      styleKeys = (key.name for {key, computed} in node.init.properties when key.type is 'Identifier' and not computed)
 
     MemberExpression: (node) ->
       return unless isStyleReference node
-      styleReferences.push node.property.name
+      styleReferences.push node.property
 
     'Program:exit': ->
       return unless styleKeys?.length
-      for key in styleKeys
-        continue if key.name in styleReferences
-        context.report key, "Unused style detected: #{key.name}"
+      for reference in styleReferences
+        continue if reference.name in styleKeys
+        context.report reference, "Undefined style detected: #{reference.name}"

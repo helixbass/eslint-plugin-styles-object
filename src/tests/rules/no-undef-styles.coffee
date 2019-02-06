@@ -1,16 +1,14 @@
-rule = require '../../rules/no-unused-styles'
+rule = require '../../rules/no-undef-styles'
 {RuleTester} = require 'eslint'
 
 ruleTester = new RuleTester()
 
 error = (key) ->
-  message: "Unused style detected: #{key}"
+  message: "Undefined style detected: #{key}"
 
 tests =
   valid: [
-    code: 'const styles = 1'
-  ,
-    code: 'const styles = {}'
+    code: 'styles.a'
   ,
     code: '''
       const styles = {
@@ -31,9 +29,9 @@ tests =
   ]
   invalid: [
     code: '''
-      const styles = {a: 1}
+      render(<div css={styles.a} />)
 
-      render(<div css={styles.ab} />)
+      const styles = {b: 1}
     '''
     errors: [error('a')]
   ]
@@ -47,4 +45,4 @@ config =
 
 Object.assign(test, config) for test in [...tests.valid, ...tests.invalid]
 
-ruleTester.run 'no-unused-styles', rule, tests
+ruleTester.run 'no-undef-styles', rule, tests
