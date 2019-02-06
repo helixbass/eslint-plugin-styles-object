@@ -1,0 +1,2 @@
+- detect presence of component
+- don't enforce no-unused-styles if there's a computed reference eg styles[key]?
