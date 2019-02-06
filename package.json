@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-styles-object",
-  "version": "0.0.0-development",
+  "version": "0.0.1",
   "author": "Julian Rosse",
   "description": "Styles object rules for ESLint",
   "main": "lib/index.js",
