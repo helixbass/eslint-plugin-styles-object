@@ -14,9 +14,11 @@ module.exports =
     hasSeenStylesDeclaration = no
 
     VariableDeclarator: (node) ->
-      return unless isStylesDeclaration node
+      isDeclaration = isStylesDeclaration {node, context}
+      return unless isDeclaration
       hasSeenStylesDeclaration = yes
-      styleKeys = (key.name for {key, computed} in node.init.properties when key.type is 'Identifier' and not computed)
+      {styleKeys} = isDeclaration
+      styleKeys = (key.name for key in styleKeys)
 
     MemberExpression: (node) ->
       return unless isStyleReference node

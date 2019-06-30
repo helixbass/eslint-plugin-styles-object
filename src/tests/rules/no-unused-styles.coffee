@@ -36,6 +36,26 @@ tests =
       render(<div css={styles.ab} />)
     '''
     errors: [error('a')]
+  ,
+    # stylesheet-create-function
+    code: '''
+      render(<div css={styles.ab} />)
+
+      const styles = createStylesheet({a: 1})
+    '''
+    errors: [error('a')]
+    settings:
+      'styles-object/stylesheet-create-function': 'createStylesheet'
+  ,
+    # stylesheet-create-function member expression
+    code: '''
+      render(<div css={styles.ab} />)
+
+      const styles = StyleSheet.create({a: 1})
+    '''
+    errors: [error('a')]
+    settings:
+      'styles-object/stylesheet-create-function': 'StyleSheet.create'
   ]
 
 config =

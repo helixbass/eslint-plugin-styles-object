@@ -13,8 +13,9 @@ module.exports =
     styleReferences = []
 
     VariableDeclarator: (node) ->
-      return unless isStylesDeclaration node
-      styleKeys = (key for {key, computed} in node.init.properties when key.type is 'Identifier' and not computed)
+      isDeclaration = isStylesDeclaration {node, context}
+      return unless isDeclaration
+      {styleKeys} = isDeclaration
 
     MemberExpression: (node) ->
       return unless isStyleReference node
