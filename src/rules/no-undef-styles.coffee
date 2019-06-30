@@ -11,9 +11,11 @@ module.exports =
   create: (context) ->
     styleKeys = null
     styleReferences = []
+    hasSeenStylesDeclaration = no
 
     VariableDeclarator: (node) ->
       return unless isStylesDeclaration node
+      hasSeenStylesDeclaration = yes
       styleKeys = (key.name for {key, computed} in node.init.properties when key.type is 'Identifier' and not computed)
 
     MemberExpression: (node) ->
@@ -21,7 +23,7 @@ module.exports =
       styleReferences.push node.property
 
     'Program:exit': ->
-      return unless styleKeys?.length
+      return unless hasSeenStylesDeclaration
       for reference in styleReferences
         continue if reference.name in styleKeys
         context.report reference, "Undefined style detected: #{reference.name}"

@@ -34,6 +34,14 @@ tests =
       const styles = {b: 1}
     '''
     errors: [error('a')]
+  ,
+    # empty styles object
+    code: '''
+      render(<div css={styles.a} />)
+
+      const styles = {}
+    '''
+    errors: [error('a')]
   ]
 
 config =
